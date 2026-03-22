@@ -8,8 +8,9 @@
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
   html, body {
-    width: 402px;
+    widh: 100%;
     margin: 0;
+   overflow-x: hidden;
     /* No overflow-x:hidden here — it creates an implicit scroll container
        that silently breaks position:sticky in many browsers */
   }
@@ -22,8 +23,9 @@
 
   /* ── Outer mobile shell ── */
   #app {
-    width: 402px;
-    min-width: 402px;
+    width: 100%;
+    max-width: 402px;
+   margin: 0 auto;
     background: #000;
     position: relative;
     overflow-x: clip; /* clip without creating a scroll container — preserves sticky */

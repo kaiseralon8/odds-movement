@@ -6,100 +6,23 @@
 <title>Odds Movement – PartidoX2</title>
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
   html, body {
     widh: 100%;
     margin: 0;
-    /* No overflow-x:hidden here — it creates an implicit scroll container
-       that silently breaks position:sticky in many browsers */
   }
-
   body {
     background: #000;
     font-family: 'Inter', sans-serif;
     min-height: 100vh;
   }
-
-  /* ── Outer mobile shell ── */
   #app {
     width: 100%;
     max-width: 402px;
-   margin: 0 auto;
+    margin: 0 auto;
     background: #000;
     position: relative;
-    /* clip without creating a scroll container — preserves sticky */
-    /* Ensure enough height for sticky tabs to be noticeable on any viewport */
     padding-bottom: 320px;
   }
-
-  /* ── Status bar ── */
-  .status-bar {
-    background: #000;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 12px 16px 12px 32px;
-    height: 48px;
-  }
-  .status-bar .time {
-    font-weight: 600;
-    font-size: 16px;
-    color: #eff1f3;
-    line-height: 20px;
-  }
-  .status-icons {
-    display: flex;
-    align-items: center;
-    gap: 2px;
-  }
-  /* Signal bars */
-  .signal { display: flex; align-items: flex-end; gap: 2px; height: 12px; }
-  .signal span {
-    background: #eff1f3;
-    border-radius: 1px;
-    width: 3px;
-  }
-  .signal span:nth-child(1) { height: 3px; }
-  .signal span:nth-child(2) { height: 5px; }
-  .signal span:nth-child(3) { height: 8px; }
-  .signal span:nth-child(4) { height: 11px; }
-  /* WiFi */
-  .wifi { width: 16px; height: 12px; position: relative; margin: 0 4px; }
-  .wifi-arc {
-    border: 1.5px solid #eff1f3;
-    border-bottom: none;
-    border-radius: 50% 50% 0 0;
-    position: absolute;
-    bottom: 1px;
-    left: 50%;
-    transform: translateX(-50%);
-  }
-  .wifi-arc:nth-child(1) { width: 4px; height: 2px; }
-  .wifi-arc:nth-child(2) { width: 8px; height: 4px; }
-  .wifi-arc:nth-child(3) { width: 14px; height: 7px; }
-  .wifi-dot { width: 2px; height: 2px; background: #eff1f3; border-radius: 50%; position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); }
-  /* Battery */
-  .battery {
-    width: 22px; height: 12px; position: relative; margin-left: 2px;
-    border: 1px solid rgba(239,241,243,0.3);
-    border-radius: 2px;
-  }
-  .battery::after {
-    content: '';
-    position: absolute;
-    right: -4px; top: 50%; transform: translateY(-50%);
-    width: 2px; height: 5px;
-    background: rgba(239,241,243,0.4);
-    border-radius: 0 1px 1px 0;
-  }
-  .battery-fill {
-    position: absolute;
-    left: 1px; top: 1px; bottom: 1px;
-    width: 75%;
-    background: #eff1f3;
-    border-radius: 1px;
-  }
-
   /* ── Top header ── */
   .top-header {
     background: #000;
@@ -118,7 +41,6 @@
     display: flex; align-items: center; justify-content: center;
   }
   .chevron-left svg, .icon-btn svg { display: block; }
-
   /* ── Match card ── */
   .match-card {
     background: #191919;
@@ -127,8 +49,6 @@
     flex-direction: column;
     gap: 16px;
   }
-
-  /* Liga row */
   .liga-row {
     display: flex;
     align-items: center;
@@ -139,8 +59,6 @@
   .liga-left { display: flex; align-items: center; gap: 8px; }
   .liga-flag { width: 16px; height: 16px; border-radius: 50%; object-fit: cover; flex-shrink: 0; }
   .liga-text { font-size: 10px; font-weight: 500; color: #8994a8; letter-spacing: 0.2px; }
-
-  /* Score row */
   .score-row {
     display: flex;
     align-items: center;
@@ -150,11 +68,11 @@
   .team-block { display: flex; flex-direction: column; align-items: center; gap: 4px; width: 104px; }
   .team-logo { width: 36px; height: 36px; border-radius: 50%; overflow: hidden; }
   .team-logo img { width: 100%; height: 100%; object-fit: contain; }
-  .team-name { font-size: 12px; font-weight: 500; color: #eff1f3; text-align: center; letter-spacing: 0.12px; }
+  /* ── CHANGE 4: team name +2px size, weight 500→600 ── */
+  .team-name { font-size: 14px; font-weight: 600; color: #eff1f3; text-align: center; letter-spacing: 0.12px; }
   .match-center { display: flex; flex-direction: column; align-items: center; gap: 4px; }
   .match-time { font-size: 20px; font-weight: 600; color: #eff1f3; }
   .match-gmt { display: flex; align-items: center; gap: 4px; font-size: 10px; color: #8994a8; }
-
   /* ── Sticky tabs wrapper ── */
   .sticky-tabs-wrap {
     position: sticky;
@@ -162,8 +80,6 @@
     z-index: 90;
     background: #191919;
   }
-
-  /* Main tabs (Match / Odds / Statistics …) */
   .main-tabs {
     display: flex;
     gap: 12px;
@@ -174,14 +90,15 @@
     border-bottom: 1px solid #272727;
   }
   .main-tabs::-webkit-scrollbar { display: none; }
+  /* ── CHANGE 2 & 3: tab padding adds 4px each side, font-size 12→14px ── */
   .tab-btn {
     flex-shrink: 0;
     height: 36px;
-    padding: 0 4px 4px;
+    padding: 0 8px 4px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 12px;
+    font-size: 14px;
     font-weight: 500;
     color: #8994a8;
     letter-spacing: 0.12px;
@@ -194,7 +111,6 @@
     color: #0055fe;
     border-bottom-color: #0055fe;
   }
-
   /* ── Bet-type filter tabs ── */
   .filter-tabs {
     display: flex;
@@ -225,13 +141,11 @@
     background: #191919;
     color: #8994a8;
   }
-
   /* ── Bet card selection ── */
   .bet-card { cursor: pointer; transition: border-color 0.18s; }
   .bet-card[data-series="home"].selected { border-color: #0055fe; }
   .bet-card[data-series="draw"].selected { border-color: rgba(224,226,232,0.7); }
   .bet-card[data-series="away"].selected { border-color: #f59e0b; }
-
   /* ── Bet cards ── */
   .bet-cards {
     display: flex;
@@ -273,7 +187,6 @@
   .arrow-icon { width: 16px; height: 16px; }
   .arrow-up { color: #22c55e; }
   .arrow-down { color: #ef4444; transform: scaleY(-1); }
-
   .bet-tags { display: flex; gap: 4px; }
   .bet-tag {
     display: flex; gap: 4px; align-items: center;
@@ -283,7 +196,6 @@
   }
   .bet-tag.high { background: rgba(38,215,103,0.3); color: #22c55e; }
   .bet-tag.low  { background: rgba(239,68,68,0.3);  color: #ef4444; }
-
   /* ── Chart section ── */
   .chart-section {
     margin: 12px 16px 0;
@@ -295,7 +207,6 @@
     display: flex;
     flex-direction: column;
   }
-
   .chart-header {
     display: flex;
     align-items: center;
@@ -311,14 +222,11 @@
   .legend-item { display: flex; gap: 4px; align-items: center; }
   .legend-dot { width: 8px; height: 8px; border-radius: 50%; }
   .legend-label { font-size: 10px; font-weight: 500; color: #8994a8; letter-spacing: 0.2px; }
-
   .chart-body {
     display: flex;
     flex: 1;
     min-height: 0;
   }
-
-  /* Y-axis labels */
   .y-axis {
     display: flex;
     flex-direction: column;
@@ -331,8 +239,6 @@
     line-height: 16px; text-align: right;
     padding-right: 4px;
   }
-
-  /* Canvas wrapper */
   .canvas-wrap {
     flex: 1;
     position: relative;
@@ -347,13 +253,12 @@
   .x-axis {
     display: flex;
     justify-content: space-between;
-    padding: 4px 0 0 40px; /* left offset matches y-axis width */
+    padding: 4px 0 0 40px;
     height: 20px;
     align-items: center;
     flex-shrink: 0;
   }
   .x-label { font-size: 10px; color: rgba(137,148,168,0.6); letter-spacing: 0.12px; }
-
   /* ── Tooltip ── */
   #chart-tooltip {
     position: fixed;
@@ -386,7 +291,6 @@
   .tt-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
   .tt-key { font-size: 10px; color: #8994a8; width: 34px; }
   .tt-val { font-size: 11px; font-weight: 600; color: #eff1f3; }
-
   /* ── Movement Log ── */
   .movement-log {
     margin: 12px 16px 0;
@@ -398,7 +302,6 @@
     gap: 12px;
   }
   .log-title { font-size: 12px; color: #8994a8; font-weight: 400; letter-spacing: 0.12px; }
-
   .log-item {
     display: flex;
     align-items: center;
@@ -430,7 +333,6 @@
     font-size: 12px; color: rgba(137,148,168,0.8);
   }
   .log-desc { font-size: 10px; font-weight: 500; color: #8994a8; letter-spacing: 0.2px; }
-
   /* ── Bet Now navbar ── */
   #bet-navbar {
     position: sticky;
@@ -469,31 +371,12 @@
     border-radius: 100px;
     margin: 4px auto 0;
   }
-
-  /* bottom spacer */
   .bottom-spacer { height: 16px; }
 </style>
 </head>
 <body>
 <div id="app">
-
-  <!-- Status Bar -->
-  <div class="status-bar">
-    <span class="time">9:41</span>
-    <div class="status-icons">
-      <div class="signal">
-        <span></span><span></span><span></span><span></span>
-      </div>
-      <div class="wifi">
-        <div class="wifi-dot"></div>
-        <div class="wifi-arc" style="width:4px;height:2px;bottom:3px"></div>
-        <div class="wifi-arc" style="width:8px;height:4px;bottom:3px"></div>
-        <div class="wifi-arc" style="width:14px;height:7px;bottom:3px"></div>
-      </div>
-      <div class="battery"><div class="battery-fill"></div></div>
-    </div>
-  </div>
-
+  <!-- CHANGE 1: status-bar removed — screen starts directly at app header -->
   <!-- Top header -->
   <div class="top-header">
     <div class="left">
@@ -507,7 +390,6 @@
     <div class="icons">
       <div class="icon-btn">
         <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-          <!-- share-07: arrow up from tray -->
           <path d="M8 1.5V10" stroke="#eff1f3" stroke-width="1.2" stroke-linecap="round"/>
           <path d="M5.5 4L8 1.5L10.5 4" stroke="#eff1f3" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
           <path d="M3 9.5V14H13V9.5" stroke="#eff1f3" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -520,10 +402,8 @@
       </div>
     </div>
   </div>
-
   <!-- Match card -->
   <div class="match-card">
-    <!-- Liga row -->
     <div class="liga-row">
       <div class="liga-left">
         <img src="https://www.figma.com/api/mcp/asset/f8c5edce-8e6a-4017-986f-6446430c3305" alt="Argentina" class="liga-flag" />
@@ -533,7 +413,6 @@
         <path d="M6 4L10 8L6 12" stroke="#8994a8" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
       </svg>
     </div>
-    <!-- Score row -->
     <div class="score-row">
       <div class="team-block">
         <div class="team-logo">
@@ -559,7 +438,6 @@
       </div>
     </div>
   </div>
-
   <!-- Sticky tabs -->
   <div class="sticky-tabs-wrap">
     <div class="main-tabs">
@@ -570,7 +448,6 @@
       <div class="tab-btn">Lineup</div>
     </div>
   </div>
-
   <!-- Filter tabs -->
   <div class="filter-tabs">
     <div class="filter-tab active">1X2</div>
@@ -578,7 +455,6 @@
     <div class="filter-tab">First Half</div>
     <div class="filter-tab">Second Half</div>
   </div>
-
   <!-- Bet cards -->
   <div class="bet-cards">
     <div class="bet-card" data-series="home">
@@ -639,7 +515,6 @@
       </div>
     </div>
   </div>
-
   <!-- Chart -->
   <div class="chart-section">
     <div class="chart-header">
@@ -686,11 +561,9 @@
       <span class="x-label">Now</span>
     </div>
   </div>
-
   <!-- Movement Log -->
   <div class="movement-log">
     <div class="log-title">Movement Log</div>
-
     <div class="log-item">
       <div class="log-dot home"></div>
       <div class="log-icon"><img src="https://www.figma.com/api/mcp/asset/74ccfec3-ae6f-4612-b4c5-182223fb3ec6" alt="Boca"/></div>
@@ -706,7 +579,6 @@
         <div class="log-desc">Key midfielder confirmed in starting XI</div>
       </div>
     </div>
-
     <div class="log-item">
       <div class="log-dot draw"></div>
       <div class="log-icon" style="display:flex;align-items:center;justify-content:center;background:#272727">
@@ -724,7 +596,6 @@
         <div class="log-desc">Weather forecast: rain expected at kickoff</div>
       </div>
     </div>
-
     <div class="log-item">
       <div class="log-dot away"></div>
       <div class="log-icon"><img src="https://www.figma.com/api/mcp/asset/db4a14ba-02ac-46ff-99da-4cbf7e043a14" alt="River"/></div>
@@ -740,7 +611,6 @@
         <div class="log-desc">Away team captain injury update — minor knock</div>
       </div>
     </div>
-
     <div class="log-item">
       <div class="log-dot away"></div>
       <div class="log-icon"><img src="https://www.figma.com/api/mcp/asset/db4a14ba-02ac-46ff-99da-4cbf7e043a14" alt="River"/></div>
@@ -756,7 +626,6 @@
         <div class="log-desc">River Plate starting lineup confirmed, no surprises</div>
       </div>
     </div>
-
     <div class="log-item">
       <div class="log-dot home"></div>
       <div class="log-icon"><img src="https://www.figma.com/api/mcp/asset/74ccfec3-ae6f-4612-b4c5-182223fb3ec6" alt="Boca"/></div>
@@ -773,18 +642,14 @@
       </div>
     </div>
   </div>
-
   <div class="bottom-spacer"></div>
-
   <!-- Bet Now -->
   <div id="bet-navbar">
     <div class="bet-now-btn"><span>Bet Now</span></div>
     <div class="home-indicator"></div>
   </div>
-
 </div>
-
-<!-- Tooltip (outside #app for fixed positioning) -->
+<!-- Tooltip -->
 <div id="chart-tooltip">
   <div class="tt-time" id="tt-time">14:32</div>
   <div class="tt-row">
@@ -803,53 +668,38 @@
     <span class="tt-val" id="tt-away">—</span>
   </div>
 </div>
-
 <script>
-// ── Chart data ──────────────────────────────────────────────────────────────
 const TIMES = [
   '06:00','07:00','08:00','09:00','10:00','11:00','12:00','13:00',
   '14:00','16:00','18:00','20:00','22:00','00:00','02:00','04:00',
   '06:00','08:00','10:00','12:00','14:00','Now'
 ];
-
-// Home: lowest line — oscillates with directional breaks, ends 1.80
 const HOME = [2.50,2.68,2.42,2.78,2.55,2.88,2.72,2.62,2.95,2.78,3.12,3.25,3.05,2.80,2.52,2.28,2.10,2.05,1.95,1.88,1.83,1.80];
-// Draw: middle line — more pronounced swings, ends 3.60
 const DRAW = [4.20,4.45,4.12,4.58,4.28,4.65,4.45,4.32,4.60,4.38,4.72,4.45,4.28,4.08,3.92,3.80,3.72,3.66,3.62,3.60,3.58,3.60];
-// Away: highest line — volatile peaks, ends 3.90
 const AWAY = [4.90,5.18,4.75,5.40,5.05,5.55,5.28,5.48,5.68,5.40,5.75,5.42,5.18,4.90,4.65,4.40,4.22,4.08,4.00,3.95,3.92,3.90];
-
 const Y_MIN = 0;
 const Y_MAX = 6.5;
 
-// ── Canvas setup ─────────────────────────────────────────────────────────────
-const wrap = document.getElementById('canvas-wrap');
+const wrap   = document.getElementById('canvas-wrap');
 const canvas = document.getElementById('chart-canvas');
-const ctx = canvas.getContext('2d');
+const ctx    = canvas.getContext('2d');
 
 let _resizing = false;
 function resizeCanvas() {
   if (_resizing) return;
   _resizing = true;
   const r = wrap.getBoundingClientRect();
-  const h = r.height; // x-axis is now outside canvas-wrap
+  const h = r.height;
   if (r.width === 0 || h <= 0) { _resizing = false; return; }
-  // Only set pixel buffer dimensions; let CSS control display size
   canvas.width  = Math.round(r.width  * devicePixelRatio);
   canvas.height = Math.round(h        * devicePixelRatio);
   drawChart(activeIdx);
   _resizing = false;
 }
 
-// ── Coordinate helpers ────────────────────────────────────────────────────────
-function xForIdx(i, W) {
-  return (i / (HOME.length - 1)) * W;
-}
-function yForVal(v, H) {
-  return H - ((v - Y_MIN) / (Y_MAX - Y_MIN)) * H;
-}
+function xForIdx(i, W) { return (i / (HOME.length - 1)) * W; }
+function yForVal(v, H)  { return H - ((v - Y_MIN) / (Y_MAX - Y_MIN)) * H; }
 
-// ── Smooth line via cardinal spline ──────────────────────────────────────────
 function smoothPath(pts, tension = 0.15) {
   if (pts.length < 2) return;
   ctx.moveTo(pts[0][0], pts[0][1]);
@@ -866,10 +716,9 @@ function smoothPath(pts, tension = 0.15) {
   }
 }
 
-// ── Draw ─────────────────────────────────────────────────────────────────────
 let activeIdx = -1;
 let selectedSeries = null;
-let activeMarkerLabels = new Set(); // 'min' | 'max' — labels revealed on click
+let activeMarkerLabels = new Set();
 
 const SERIES = [
   { key: 'home', data: HOME, color: '#0055fe' },
@@ -885,7 +734,6 @@ function drawChart(hoverIdx) {
   ctx.scale(dpr, dpr);
   ctx.clearRect(0, 0, W, H);
 
-  // Grid lines
   const yVals = [6.5, 5.5, 4.5, 3.5, 2.5, 0];
   ctx.setLineDash([3, 4]);
   ctx.lineWidth = 0.5;
@@ -899,7 +747,6 @@ function drawChart(hoverIdx) {
   });
   ctx.setLineDash([]);
 
-  // Crosshair
   if (hoverIdx >= 0) {
     const x = xForIdx(hoverIdx, W);
     ctx.beginPath();
@@ -910,7 +757,6 @@ function drawChart(hoverIdx) {
     ctx.stroke();
   }
 
-  // Draw dimmed series first, then emphasized on top
   const order = selectedSeries
     ? [...SERIES.filter(s => s.key !== selectedSeries), SERIES.find(s => s.key === selectedSeries)]
     : SERIES;
@@ -919,10 +765,8 @@ function drawChart(hoverIdx) {
     const dimmed = selectedSeries !== null && selectedSeries !== key;
     const alpha  = dimmed ? 0.18 : 1;
     const pts = data.map((v, i) => [xForIdx(i, W), yForVal(v, H)]);
-
     ctx.globalAlpha = alpha;
 
-    // Filled area
     ctx.beginPath();
     smoothPath(pts);
     ctx.lineTo(pts[pts.length-1][0], H);
@@ -934,7 +778,6 @@ function drawChart(hoverIdx) {
     ctx.fillStyle = grad;
     ctx.fill();
 
-    // Line
     ctx.beginPath();
     smoothPath(pts);
     ctx.strokeStyle = color;
@@ -942,7 +785,6 @@ function drawChart(hoverIdx) {
     ctx.lineJoin = 'round';
     ctx.stroke();
 
-    // Hover dot
     if (hoverIdx >= 0) {
       const [px, py] = pts[hoverIdx];
       ctx.beginPath();
@@ -959,11 +801,9 @@ function drawChart(hoverIdx) {
       ctx.lineWidth = 1.5;
       ctx.stroke();
     }
-
     ctx.globalAlpha = 1;
   });
 
-  // ── Min / Max markers (only when a series is selected) ───────────────────
   if (selectedSeries !== null) {
     const sel = SERIES.find(s => s.key === selectedSeries);
     if (sel) {
@@ -980,31 +820,26 @@ function drawChart(hoverIdx) {
         const x = xForIdx(idx, W);
         const y = yForVal(val, H);
 
-        // Outer glow ring
         ctx.beginPath();
         ctx.arc(x, y, 10, 0, Math.PI * 2);
         ctx.fillStyle = glow;
         ctx.fill();
 
-        // Mid halo
         ctx.beginPath();
         ctx.arc(x, y, 5.5, 0, Math.PI * 2);
         ctx.fillStyle = hexAlpha(dot, 0.25);
         ctx.fill();
 
-        // Solid dot
         ctx.beginPath();
         ctx.arc(x, y, 3, 0, Math.PI * 2);
         ctx.fillStyle = dot;
         ctx.fill();
 
-        // White pinhole
         ctx.beginPath();
         ctx.arc(x, y, 1.1, 0, Math.PI * 2);
         ctx.fillStyle = '#fff';
         ctx.fill();
 
-        // Label — only when this marker has been clicked
         const markerKey = above ? 'max' : 'min';
         if (activeMarkerLabels.has(markerKey)) {
           const labelText = above ? 'Highest' : 'Lowest';
@@ -1031,39 +866,30 @@ function hexAlpha(hex, a) {
   return `rgba(${r},${g},${b},${a})`;
 }
 
-// ── Tooltip ───────────────────────────────────────────────────────────────────
-const tooltip  = document.getElementById('chart-tooltip');
-const ttTime   = document.getElementById('tt-time');
-const ttHome   = document.getElementById('tt-home');
-const ttDraw   = document.getElementById('tt-draw');
-const ttAway   = document.getElementById('tt-away');
+const tooltip = document.getElementById('chart-tooltip');
+const ttTime  = document.getElementById('tt-time');
+const ttHome  = document.getElementById('tt-home');
+const ttDraw  = document.getElementById('tt-draw');
+const ttAway  = document.getElementById('tt-away');
 
 function showTooltip(idx, clientX, clientY) {
   ttTime.textContent = TIMES[idx];
   ttHome.textContent = HOME[idx].toFixed(2);
   ttDraw.textContent = DRAW[idx].toFixed(2);
   ttAway.textContent = AWAY[idx].toFixed(2);
-
   tooltip.classList.add('visible');
-
-  // Position: 12px right of cursor, flip if too close to right edge
-  const TW = 130; // approx tooltip width
+  const TW = 130;
   const vw = window.innerWidth;
   let left = clientX + 14;
   if (left + TW > vw - 8) left = clientX - TW - 14;
   let top = clientY - 20;
   if (top < 4) top = 4;
-
   tooltip.style.left = left + 'px';
   tooltip.style.top  = top  + 'px';
-
-  // Set transform-origin based on side
   tooltip.style.transformOrigin = left > clientX ? 'top left' : 'top right';
 }
 
-function hideTooltip() {
-  tooltip.classList.remove('visible');
-}
+function hideTooltip() { tooltip.classList.remove('visible'); }
 
 function getHoverIdx(clientX) {
   const rect = canvas.getBoundingClientRect();
@@ -1072,28 +898,23 @@ function getHoverIdx(clientX) {
   return Math.round(frac * (HOME.length - 1));
 }
 
-// ── Marker hit detection ──────────────────────────────────────────────────────
 function hitTestMarkers(clientX, clientY) {
   if (selectedSeries === null) return false;
   const sel = SERIES.find(s => s.key === selectedSeries);
   if (!sel) return false;
-
   const dpr = devicePixelRatio;
   const W = canvas.width / dpr;
   const H = canvas.height / dpr;
   const rect = canvas.getBoundingClientRect();
   const cx = clientX - rect.left;
   const cy = clientY - rect.top;
-
   const d = sel.data;
   const minVal = Math.min(...d);
   const maxVal = Math.max(...d);
-
   const markers = [
     { key: 'max', x: xForIdx(d.indexOf(maxVal), W), y: yForVal(maxVal, H) },
     { key: 'min', x: xForIdx(d.indexOf(minVal), W), y: yForVal(minVal, H) },
   ];
-
   let hit = false;
   markers.forEach(({ key, x, y }) => {
     if (Math.hypot(cx - x, cy - y) < 14) {
@@ -1105,11 +926,8 @@ function hitTestMarkers(clientX, clientY) {
   return hit;
 }
 
-canvas.addEventListener('click', e => {
-  hitTestMarkers(e.clientX, e.clientY);
-});
+canvas.addEventListener('click', e => { hitTestMarkers(e.clientX, e.clientY); });
 
-// Touch tap: track start position, fire hit-test on touchend if no drag
 let _touchStart = null;
 canvas.addEventListener('touchstart', e => {
   e.preventDefault();
@@ -1129,7 +947,6 @@ canvas.addEventListener('mouseleave', () => {
   hideTooltip();
 });
 
-// Touch support
 canvas.addEventListener('touchmove', e => {
   e.preventDefault();
   const t = e.touches[0];
@@ -1138,29 +955,22 @@ canvas.addEventListener('touchmove', e => {
   drawChart(idx);
   showTooltip(idx, t.clientX, t.clientY);
 }, { passive: false });
+
 canvas.addEventListener('touchend', e => {
-  // Tap detection: if finger barely moved, treat as a click on the marker
   if (_touchStart) {
     const t = e.changedTouches[0];
     const dx = t.clientX - _touchStart.x;
     const dy = t.clientY - _touchStart.y;
-    if (Math.hypot(dx, dy) < 6) {
-      hitTestMarkers(t.clientX, t.clientY);
-    }
+    if (Math.hypot(dx, dy) < 6) hitTestMarkers(t.clientX, t.clientY);
     _touchStart = null;
   }
-  setTimeout(() => {
-    activeIdx = -1;
-    drawChart(-1);
-    hideTooltip();
-  }, 1200);
+  setTimeout(() => { activeIdx = -1; drawChart(-1); hideTooltip(); }, 1200);
 });
 
-// ── Card selection ────────────────────────────────────────────────────────────
 document.querySelectorAll('.bet-card').forEach(card => {
   card.addEventListener('click', () => {
     const key = card.dataset.series;
-    activeMarkerLabels.clear(); // reset labels whenever selection changes
+    activeMarkerLabels.clear();
     if (selectedSeries === key) {
       selectedSeries = null;
       card.classList.remove('selected');
@@ -1173,31 +983,25 @@ document.querySelectorAll('.bet-card').forEach(card => {
   });
 });
 
-// ── Scroll: hide Bet Now ──────────────────────────────────────────────────────
 const betNavbar = document.getElementById('bet-navbar');
-let ticking     = false;
-
+let ticking = false;
 window.addEventListener('scroll', () => {
   if (!ticking) {
     requestAnimationFrame(() => {
-      if (window.scrollY > 10) {
-        betNavbar.classList.add('hidden');
-      } else {
-        betNavbar.classList.remove('hidden');
-      }
+      betNavbar.classList.toggle('hidden', window.scrollY > 10);
       ticking = false;
     });
     ticking = true;
   }
 });
 
-// ── Tab clicks ────────────────────────────────────────────────────────────────
 document.querySelectorAll('.tab-btn').forEach(btn => {
   btn.addEventListener('click', () => {
     document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
   });
 });
+
 document.querySelectorAll('.filter-tab').forEach(btn => {
   btn.addEventListener('click', () => {
     document.querySelectorAll('.filter-tab').forEach(b => b.classList.remove('active'));
@@ -1205,12 +1009,9 @@ document.querySelectorAll('.filter-tab').forEach(btn => {
   });
 });
 
-// ── Init ──────────────────────────────────────────────────────────────────────
 window.addEventListener('resize', resizeCanvas);
-// Use ResizeObserver so we fire after layout is fully computed
 const ro = new ResizeObserver(() => { resizeCanvas(); });
 ro.observe(wrap);
-// Fallback: also fire on load
 window.addEventListener('load', resizeCanvas);
 </script>
 </body>
